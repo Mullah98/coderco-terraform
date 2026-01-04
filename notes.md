@@ -62,3 +62,74 @@
     - Run `terraform init` to download required provider and prep terraform env
 
 ---
+
+## Terraform Core Commands
+
+### Terraform init
+- Means to initialize.
+- First command you run in any terraform project.
+- Sets up the project so Terraform can work correctly.
+
+**What does `terraform init` do?**
+- *Initialize the backend* - Backend = where terraform stores the state file. State can be stored locally or remotely (eg: S3)
+- *Download provider plugins* - Reads your terraform + provider blocks. Downloads required providers from the Terraform registry
+
+**Importance**
+- Allows terraform to track infrastructure, maintain idempotency, communicate with cloud providers.
+
+*Without `init`, terraform cannot deploy anything. Always run `terraform init` before plan or apply.*
+
+---
+
+### Terraform plan
+- Previews changes before they happen.
+- Core to a security-first deployment mindset.
+- Always review the output and summary before applying to make sure everything looks correct.
+- Summary at the bottom shows resource to *add, change, and destroy*. If you only expect new resources, *destroy should be 0*.
+
+**How `terraform plan` works**
+- Compares *desired state* and *current state*.
+- Generates a plan to show exactly what will change.
+
+**Plan symbols:**
+- `+` Create -> New resource will be created.
+- `~` Update in plance -> Existing resource will be modified.
+- `-` Destroy -> Resource will be deleted.
+
+---
+
+### Terraform apply
+- Command that actually makes changes to real infrastructure.
+- Turns your *desired state* into reality.
+- Important to prevent accidental or destructive changes, gives you one last safety check.
+- *Always run `terraform plan` before `terraform apply`.
+
+**What happens when you run it?**
+1. Terraform creates an execution plan
+2. Shows a summary (add / change / destroy)
+3. Asks for confirmation (`yes`)
+4. Applied the changes
+5. Updates the *state file*
+
+---
+
+### Terraform destroy
+- Safely removes all resources managed by terraform.
+- Reads *configuration + state file*.
+- Generates a *destruction plan*, prompts for confirmation.
+- Updates the *state file* after deletion.
+
+---
+
+## Resource Block
+- Defines a piece of infrastructure to manage.
+
+- Structure: `resource "<TYPE>" "<NAME>" { ... }`
+    - Example: `resource "aws_instance" "test" { ... }`
+
+- *Key attributes for AWS EC2:*
+- ami → Amazon Machine Image (OS template)
+- instance_type → Hardware config (CPU/memory)
+- tags → Labels for environment (dev, prod, staging)
+
+---
