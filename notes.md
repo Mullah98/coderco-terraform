@@ -133,3 +133,50 @@
 - tags → Labels for environment (dev, prod, staging)
 
 ---
+
+## Terraform Import
+- Bring existing cloud resources into Terraform management without recreating them.
+- Useful in production or when joining a project with pre-existing resources.
+- Terraform does *not* generate the configuration automatically, you must write the resource block yourself.
+
+**How to use terraform import**
+1. Create a resource block in Terraform
+    - in the .tf file add:
+    resource "aws_instance" "my_instance" { 
+        *AMI and instance_type are optional here; import will link the real resource*
+    }
+    - The **resource name (my_instance)** will be used in the import command
+2. Copy the EC2 instance ID and copy it
+3. Run Terraform import
+    - `terraform import aws_instance.my_instance i-0abcd1234efg5678`
+4. Verify with `terraform plan`
+    - Should see *no changes planned* if your resource block matches the existing instance
+5. Terraform now successfully manages your instance
+    - Any future `terraform apply` will update or delete the instance according to your configuration
+
+---
+
+## Local Statefile vs Remote Statefile
+
+|------|Local|Remote|
+|-----|-------|------|
+|Storage|Stored locally in your project directory|Centralized backend(eg:AWS, Terraform Cloud)|
+|Best for|Single-user or small projects|Team projects, larger infrastructure, or CI/CD workflows|
+|Benefits|Simple setup, no extra config needed, contained env|Collaboration, automatic locking, backup and security|
+|Limitations|Risk of conflict if multiple people work on same infrastructure|--------|
+
+- Start with *local state* for learning or solo projects. Move to *remote state* when working in teams or managing production infrastructure.
+
+**EG: Terraform backend block for S3**
+```
+terraform {
+  backend "s3" {
+    bucket = "your-unique-bucket-name"   # Replace with your S3 bucket
+    key    = "terraform/state.tfstate"   # Path inside the bucket
+    region = "eu-west-1"                 # AWS region of your bucket
+    encrypt = true                       # Optional: encrypt the state file
+  }
+}
+```
+
+---
