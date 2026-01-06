@@ -180,3 +180,100 @@ terraform {
 ```
 
 ---
+
+## Terraform workflow
+
+1. `terraform init`
+- Initializes a working dir with Terraform config files
+- Downloads provider pluging (for AWS, Azure), and configures the backend
+
+2. `terraform validate`
+- Checks your Terraform configuration files for syntax errors
+- Ensures code is well-formed before planning or applying changes
+
+3. `terraform plan`
+- Compares current state with desired state
+- Shows execution plan; what will be created, changes, or destroyed
+- Verify changes before applying them
+
+4. `terraform apply`
+- Executes the plan to reach the desired state
+- By default, scans the current dir for config files
+
+5. `terraform destroy`
+- Destroys all Terraform-managed infrastructure safely
+- Prompts for confirmation
+
+---
+
+## Variables
+- Used to parametarize Terraform configs.
+- Make code reusable, flexible, and dynamic.
+- Implements *DRY* principles (Don't Repeat Yourself).
+
+**Defining input variables**
+- Each variable has unique name, cannot use duplicate names.
+- eg: ```variable "instance_type" {
+            type = string
+    }```
+
+**Using variables in resources**
+- `var.<variable_name>`
+- eg: ```resource "aws_instance" "this" {
+            ami = "ami-01ab234567cdef"
+            instance_type = var.instance_type
+        }```
+- When running `terraform plan`, it will prompt for an *input*.
+
+**Using default values**
+- You can add a *default* value inside `variables.tf` file.
+- If a default exits, Terraform *won't* prompt for input.
+- eg: ```variable "instance_type" {
+            type = string
+            default = "t3.micro"
+    }```
+- Useful for testing, not ideal for real projects.
+
+**Using `terraform.tfvars`**
+- Avoid hardcoding defaults in `variables.tf`. Pass values to `terraform.tfvars` instead.
+- Keeps configs clean and flexible.
+- Terraform automatically loads this file, no CLI input required.
+
+*Use variables.tf to define variables, and terraform.tfvars to supply values. Clean, scalable, and professional.*
+
+**Using local variables**
+- Used to store internal values inside Terraform.
+- Useful for common tags, AMI IDs, naming patterns.
+- Referenced using *local.* prefix
+- eg: 
+    - ```locals {
+            instance_ami = "ami-01abc234567def"
+        }```
+    - ```resource "aws_instance" "this" {
+            ami = local.instance_ami
+        }```
+
+**Using output variables**
+- Use to display values after `terraform apply`.
+- Used for resource IDs, Public/private IPs, ARNS.
+- Useful for debugging, automation, passing values to other Terraform configs.
+
+**Variable precedence (lowest -> highest)
+1. *Default values*
+2. *`.tfvars` files*
+3. *Environment variables (TF_VAR_name)*
+4. *CLI flags (-var="name=value")*
+
+*Higest priority always wins*
+
+**Variable types**
+- `string` -> text (`"t3.micro"`)
+- `number` -> integer & decimals (`42`, `8.34`)
+- `bool` -> `true` / `false`
+
+*Complex variable types**
+- `list`
+- `map` -> key-value pairs
+- `object` -> mixed types
+
+---
