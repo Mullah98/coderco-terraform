@@ -248,10 +248,12 @@ terraform {
 - eg: 
     - ```locals {
             instance_ami = "ami-01abc234567def"
-        }```
+        }
+        ```
     - ```resource "aws_instance" "this" {
             ami = local.instance_ami
-        }```
+        }
+        ```
 
 **Using output variables**
 - Use to display values after `terraform apply`.
@@ -277,3 +279,33 @@ terraform {
 - `object` -> mixed types
 
 ---
+
+## Terraform Modules
+- A module is a collection of Terraform files grouped together.
+- Every Terraform folder is a *module* by default; called the **Root module**.
+
+- **Why it matters?:**
+    - *Reusability*
+    - *DRY Principle*
+    - *Consistency*
+    - *Collaboration*
+
+- **Things to NEVER hardcode in Modules:**
+    - AMI IDs
+    - Instance types
+    - Regions
+    - Environment-specific values
+- Better to pass these in variables.
+
+*Terraform modules allow you to package reusable infrastructure code, enforce consistency across environments, and make collaboration easier by exposing well-defined inputs and outputs.*
+
+- `modules/EC2/` -> define the EC2 module.
+- `main.tf` -> a root file that calls the EC2 module using a `module` block
+- Without having `main.tf`, a module would just be a template. We need to actually call it.
+- If you move resources into a module *without* calling it, Terraform thinks they are removed. It plans to *destroy* them.
+- example of `main.tf`:
+    - ```
+        module "ec2" {
+            source = "./modules/ec2"
+        }
+    ```
