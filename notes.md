@@ -7,7 +7,7 @@
 ---
 
 ## Terraform
-- An open-source IaC tool.
+- An open-source IaC tool by HashiCorp.
 - *Cloud-agnostic*: Able to deploy infrastructure to different cloud providers (eg: AWS, Azure, GCP).
 - Infrastructure is defined using code, not manual setup.
 
@@ -309,3 +309,5 @@ terraform {
             source = "./modules/ec2"
         }
     ```
+
+---
