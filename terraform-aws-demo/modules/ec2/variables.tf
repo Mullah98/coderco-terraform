@@ -2,9 +2,10 @@ variable "instance_type" {
   type = string
 }
 
-locals {
-  instance_ami = "ami-0a0ff88d0f3f85a14"
+variable "instance_ami" {
+  type = string
 }
+
 
 output "instance_id" {
   description = "The ID of the EC2 instance"
