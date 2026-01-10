@@ -1,10 +1,18 @@
 resource "aws_instance" "wordpress" {
   ami = var.ami_id
-  instance_type = "t3.micro"
-  vpc_security_group_ids = [aws_security_group.wordpress_security_group.id] ## Referencing the security group resource block on line 8
+  instance_type = var.instance_type
+  vpc_security_group_ids = [aws_security_group.wordpress_security_group.id] ## Referencing the wordpress-sg
+  # key_name = "wordpress-key"
+  associate_public_ip_address = true
+
+  user_data = file("${path.module}/userdata.sh")
+
+  tags = {
+    Name = "wordpress-ec2"
+  }
 }
 
-## Creating security group to allow incoming traffic to port 80 and port 443
+## Security group for Wordpress server
 resource "aws_security_group" "wordpress_security_group" {
 
   ingress {
@@ -14,17 +22,21 @@ resource "aws_security_group" "wordpress_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port = 22
+  #   to_port = 22
+  #   protocol = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
   egress {
     from_port = 0
     to_port = 0
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "wordpress-sg"
   }
 }
