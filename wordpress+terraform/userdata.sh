@@ -13,15 +13,15 @@ sudo systemctl enable apache2
 # Download WordPress
 cd /tmp
 curl -LO https://wordpress.org/latest.tar.gz
-sudo tar xzvf latest.tar.gz -C /var/www/html/
+tar xzf latest.tar.gz
+
+# Move WordPress to web root
+sudo rm -rf /var/www/html/*
+sudo mv wordpress/* /var/www/html
 
 # Set permissions
-sudo chown -R www-data:www-data /var/www/html/wordpress
-sudo chmod -R 755 /var/www/html/wordpress
-
-# Remove Apache default page
-sudo rm /var/www/html/index.html
-
+sudo chown -R www-data:www-data /var/www/html
+sudo chmod -R 755 /var/www/html
 
 echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
 
