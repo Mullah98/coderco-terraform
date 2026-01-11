@@ -1,5 +1,5 @@
 # Deploy WordPress With Terraform on AWS EC2
-[WordPress + Terraform diagram](../assets/wordpress-terraform.drawio.png)
+![WordPress + Terraform diagram](../assets/wordpress-terraform.drawio.png)
 
 ## Overview
 This project demonstrates deploying a full **WordPress** setup on AWS using **Terraform**, provisioning real infrastructure end-to-end.
