@@ -28,3 +28,9 @@ The setup includes an **EC2 instance**, **security group** allowing HTTP traffic
 - **Cloud-init**
 
 ---
+
+## What I Learnt
+- How Terraform passes startup configuration to EC2 using `user_data`
+- How *cloud-init* automates instance setup so no manual steps required
+- Structuring Terraform projects clearly with *variables* and *outputs*
+- Writing cloud-init yaml file instead of shell scripts and understanding the root-run context

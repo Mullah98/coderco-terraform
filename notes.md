@@ -309,5 +309,22 @@ terraform {
             source = "./modules/ec2"
         }
     ```
+---
 
+## Cloud-init
+- Cloud-init scripts run as the root user by default.
+- You do not need sudo in commands inside cloud-init.
+- Commands go in a YAML file (commonly named cloud-init.yaml).
+- Terraform passes this file to EC2 via the `user_data` or `user_data_base64` argument.
+
+- **Exampe yaml file:**
+
+```
+#cloud-config
+packages:
+  - nginx
+runcmd:
+  - systemctl start nginx
+  - systemctl enable nginx
+```
 ---
