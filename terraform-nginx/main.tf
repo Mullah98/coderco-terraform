@@ -11,8 +11,10 @@ resource "aws_instance" "nginx-server" {
   }
 }
 
+## Security group for EC2 instance
 resource "aws_security_group" "nginx_security_group" {
   
+  ## Allow inbound HTTP traffic
   ingress {
     from_port = 80
     to_port = 80
@@ -20,6 +22,7 @@ resource "aws_security_group" "nginx_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ## Allow all outbound traffic
   egress {
     from_port = 0
     to_port = 0
