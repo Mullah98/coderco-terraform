@@ -16,7 +16,7 @@ I explored *Infrastructure as Code (IaC)*, *AWS EC2 provisioning*, networking, s
 
 ## Directories
 
-- **[Module notes](notes.md)** – Personal notes, tips, and key takeaways from the module
+- **[Notes](/notes/)** – Terraform basic notes and key takeaway, including advanced commands
 
 - **[Practicing Terraform](/terraform-aws-demo/)** – Practice exercises following video tutorials to learn Terraform basics
 
